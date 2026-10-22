@@ -1,0 +1,35 @@
+[project]
+name = "mirea-rag"
+version = "0.1.0"
+description = "RAG для абитуриентов РТУ МИРЭА (учебный проект: всё написано с нуля)"
+requires-python = ">=3.12"
+dependencies = [
+    "qdrant-client>=1.14",
+    "openai>=1.40",
+    "numpy>=2",
+    "rank-bm25>=0.2",
+    "PyStemmer>=3",
+    "aiogram>=3.13",
+    "pydantic>=2",
+    "langfuse>=3",
+]
+
+[project.optional-dependencies]
+parser = [
+    "httpx>=0.28",
+    "beautifulsoup4>=4.12",
+    "lxml>=5",
+    "trafilatura>=2",
+]
+
+dev = [
+    "pytest>=8",
+    "pyflakes>=3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.setuptools]
+packages = ["rag", "eval"]
