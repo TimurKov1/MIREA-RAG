@@ -1,0 +1,20 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.14.1
+    restart: unless-stopped
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  bot:
+    build: .
+    image: mirea-rag
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    depends_on: [qdrant]
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  qdrant_data:
