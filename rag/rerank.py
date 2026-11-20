@@ -1,9 +1,10 @@
+import os
 import re
 
 from rag.llm import chat
 from rag.tracing import observe
 
-RERANK_MODEL = "mistralai/mistral-small-24b-instruct-2501"
+RERANK_MODEL = os.environ.get("RERANK_MODEL") or "mistralai/mistral-small-24b-instruct-2501"
 SNIPPET = 1000
 
 SYSTEM = """Ты помогаешь искать ответ на вопрос абитуриента по фрагментам материалов приёмной комиссии вуза.

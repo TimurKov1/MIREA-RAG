@@ -9,3 +9,5 @@ eval
 logs
 parser.py
 index/qdrant
+
+.env.campus

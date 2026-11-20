@@ -1,0 +1,40 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.14.1
+    restart: unless-stopped
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  embeddings:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    environment:
+      OLLAMA_NO_CLOUD: "1"
+    volumes:
+      - embedding_models:/root/.ollama
+
+  bot:
+    build: .
+    image: mirea-rag-campus
+    restart: unless-stopped
+    env_file: .env.campus
+    environment:
+      LLM_BACKEND: vllm
+      LLM_MODEL: mirea-qwen
+      LLM_MAX_ANSWER_TOKENS: "1024"
+      EMBED_BASE_URL: http://embeddings:11434/v1
+      EMBED_MODEL: bge-m3
+      RERANK_MODEL: mirea-qwen
+      RAG_INDEX_PATH: /app/campus-index
+      QDRANT_URL: http://qdrant:6333
+      RAG_LOG_DIALOGS: "0"
+      LANGFUSE_PUBLIC_KEY: ""
+      LANGFUSE_SECRET_KEY: ""
+    depends_on: [qdrant, embeddings]
+    volumes:
+      - campus_index:/app/campus-index
+
+volumes:
+  qdrant_data:
+  embedding_models:
+  campus_index:

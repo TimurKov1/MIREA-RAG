@@ -8,11 +8,18 @@ if ENABLED:
 else:
     from openai import OpenAI
 
-API_URL = "https://polza.ai/api/v1"
+LLM_BACKEND = os.environ.get("LLM_BACKEND", "polza")
+API_URL = os.environ.get("LLM_BASE_URL")
+if LLM_BACKEND == "vllm" and not API_URL:
+    raise RuntimeError("Для vLLM задайте LLM_BASE_URL")
+API_URL = API_URL or "https://polza.ai/api/v1"
 API_KEY = os.environ.get("LLM_API_KEY")
-LLM_MODEL = "deepseek/deepseek-v4-flash"
-LLM_EXTRA = {"reasoning": {"enabled": False}}
-MAX_ANSWER_TOKENS = 4000
+LLM_MODEL = os.environ.get("LLM_MODEL") or "deepseek/deepseek-v4-flash"
+LLM_EXTRA = {
+    "polza": {"reasoning": {"enabled": False}},
+    "vllm": {"chat_template_kwargs": {"enable_thinking": False}},
+}[LLM_BACKEND]
+MAX_ANSWER_TOKENS = int(os.environ.get("LLM_MAX_ANSWER_TOKENS", "4000"))
 USAGE = {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0}
 
 _client = None
@@ -23,7 +30,7 @@ def client():
     if _client is None:
         if not API_KEY:
             raise RuntimeError("Не задана переменная окружения LLM_API_KEY")
-        _client = OpenAI(base_url=API_URL, api_key=API_KEY, max_retries=4)
+        _client = OpenAI(base_url=API_URL, api_key=API_KEY, max_retries=1 if LLM_BACKEND == "vllm" else 4)
     return _client
 
 

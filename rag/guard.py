@@ -32,6 +32,8 @@ def check(user, question):
 
 
 def log(**record):
+    if os.environ.get("RAG_LOG_DIALOGS", "1") == "0":
+        return
     os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
     record = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), **record}
     with open(LOG_PATH, "a", encoding="utf-8") as f:
