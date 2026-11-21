@@ -1,3 +1,21 @@
+x-campus-app: &campus-app
+  env_file: .env.campus
+  environment: &campus-env
+    LLM_BACKEND: vllm
+    LLM_MODEL: mirea-qwen
+    LLM_MAX_ANSWER_TOKENS: "1024"
+    EMBED_BASE_URL: http://embeddings:11434/v1
+    EMBED_MODEL: bge-m3
+    RERANK_MODEL: mirea-qwen
+    RAG_INDEX_PATH: /app/campus-index
+    QDRANT_URL: http://qdrant:6333
+    RAG_LOG_DIALOGS: "0"
+    LANGFUSE_PUBLIC_KEY: ""
+    LANGFUSE_SECRET_KEY: ""
+  depends_on: [qdrant, embeddings]
+  volumes:
+    - campus_index:/app/campus-index
+
 services:
   qdrant:
     image: qdrant/qdrant:v1.14.1
@@ -17,22 +35,22 @@ services:
     build: .
     image: mirea-rag-campus
     restart: unless-stopped
-    env_file: .env.campus
+    <<: *campus-app
+
+  web:
+    <<: *campus-app
+    profiles: [web]
+    build:
+      context: .
+      target: web
+    image: mirea-rag-campus-web
+    restart: unless-stopped
     environment:
-      LLM_BACKEND: vllm
-      LLM_MODEL: mirea-qwen
-      LLM_MAX_ANSWER_TOKENS: "1024"
-      EMBED_BASE_URL: http://embeddings:11434/v1
-      EMBED_MODEL: bge-m3
-      RERANK_MODEL: mirea-qwen
-      RAG_INDEX_PATH: /app/campus-index
-      QDRANT_URL: http://qdrant:6333
-      RAG_LOG_DIALOGS: "0"
-      LANGFUSE_PUBLIC_KEY: ""
-      LANGFUSE_SECRET_KEY: ""
-    depends_on: [qdrant, embeddings]
-    volumes:
-      - campus_index:/app/campus-index
+      <<: *campus-env
+      TELEGRAM_TOKEN: ""
+      WEB_COOKIE_SECURE: "${WEB_COOKIE_SECURE:-1}"
+    ports:
+      - "127.0.0.1:${MIREA_WEB_PORT:-8080}:8080"
 
 volumes:
   qdrant_data:

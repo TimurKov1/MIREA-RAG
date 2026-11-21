@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Помощник абитуриента РТУ МИРЭА</title>
+  <link rel="stylesheet" href="./static/styles.css">
+  <script src="./static/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="university">РТУ МИРЭА</p>
+        <h1>Помощник абитуриента</h1>
+      </div>
+      <button id="reset" type="button">Очистить диалог</button>
+    </header>
+
+    <section id="messages" role="log" aria-label="Диалог" tabindex="0">
+      <p class="intro">Задайте вопрос о поступлении, направлениях подготовки или документах.</p>
+    </section>
+
+    <form id="chat-form">
+      <label for="question">Ваш вопрос</label>
+      <div class="compose">
+        <textarea id="question" name="question" maxlength="500" rows="2" required
+                  placeholder="Какие документы нужны для поступления?"></textarea>
+        <button id="send" type="submit">Отправить</button>
+      </div>
+      <p id="status" role="status"></p>
+    </form>
+  </main>
+</body>
+</html>

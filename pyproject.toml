@@ -22,6 +22,11 @@ parser = [
     "trafilatura>=2",
 ]
 
+web = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+]
+
 dev = [
     "pytest>=8",
     "pyflakes>=3",
@@ -33,3 +38,6 @@ pythonpath = ["."]
 
 [tool.setuptools]
 packages = ["rag", "eval"]
+
+[tool.setuptools.package-data]
+rag = ["web_static/*"]
