@@ -1,0 +1,87 @@
+:root {
+  color-scheme: light;
+  font: 16px/1.55 system-ui, sans-serif;
+  color: #192d49;
+  background: #f5f7fb;
+  --blue: #174784;
+  --line: #d0dced;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+main {
+  max-width: 48rem;
+  min-height: 100dvh;
+  margin: auto;
+  padding: clamp(1rem, 4vw, 2rem);
+  display: grid;
+  grid-template-rows: auto minmax(14rem, 1fr) auto;
+  height: 100dvh;
+}
+
+header, .compose {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+header { padding-bottom: 1rem; }
+h1 { margin: 0; font-size: clamp(1.35rem, 4vw, 2rem); line-height: 1.2; }
+.university { margin: 0 0 .25rem; color: var(--blue); font-size: .875rem; font-weight: 700; }
+
+#messages {
+  overflow: auto;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: .875rem;
+  padding: 1rem;
+}
+
+.intro { margin: .25rem 0; }
+article { padding: .8rem 1rem; border-radius: .65rem; margin-bottom: .85rem; }
+article.user { background: #e8f1ff; margin-inline-start: clamp(.5rem, 6vw, 3rem); }
+article.assistant { background: #f1f4f9; margin-inline-end: clamp(.5rem, 6vw, 3rem); }
+article h2, article h3 { font-size: .875rem; margin: 0 0 .25rem; }
+article h3 { margin-top: .75rem; }
+article p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+article ol { padding-left: 1.5rem; margin: 0; overflow-wrap: anywhere; }
+a { color: var(--blue); }
+
+form { padding-top: .75rem; }
+label { display: block; margin-bottom: .25rem; font-weight: 650; }
+
+textarea, button { font: inherit; }
+textarea {
+  width: 100%;
+  min-width: 0;
+  max-height: 25vh;
+  resize: vertical;
+  padding: .55rem .7rem;
+  border: 1px solid #869db9;
+  border-radius: .5rem;
+  color: inherit;
+  background: white;
+}
+
+button {
+  color: white;
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  border-radius: .55rem;
+  padding: .55rem .85rem;
+  cursor: pointer;
+}
+
+#reset { color: var(--blue); background: transparent; }
+button:disabled { opacity: .6; cursor: wait; }
+:focus-visible { outline: 2px solid #245dd3; outline-offset: 3px; }
+#status { min-height: 1.55em; margin: .25rem 0 0; }
+
+@media (max-width: 34rem) {
+  header { align-items: start; }
+  #reset { font-size: .85rem; }
+  .compose { gap: .5rem; }
+  button { padding-inline: .6rem; }
+}

@@ -16,7 +16,7 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
       - name: Установка зависимостей
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev,web]"
       - name: Проверка кода (pyflakes)
         run: python -m pyflakes rag eval tests parser.py institutes_summary.py
       - name: Тесты
